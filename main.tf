@@ -27,9 +27,6 @@ resource "aws_instance" "key_cloak" {
       volume_size = 8
       delete_on_termination = true
     }
-    ebs_block_device {
-      device_name = ""
-    }
 
     tags = {
         "Name" : "keyclaok"
