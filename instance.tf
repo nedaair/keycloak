@@ -45,4 +45,8 @@ resource "aws_instance" "keycloak_instance" {
     tags = {
         "Name" : "keycloak"
     }
+
+    key_name = "megazone"
+
+    associate_public_ip_address = true
 }
