@@ -75,7 +75,7 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
+resource "aws_security_group_rule" "keycloak_security_group_rule_egress" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
