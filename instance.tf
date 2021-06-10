@@ -33,7 +33,7 @@ resource "aws_instance" "keycloak_instance" {
 		#! /bin/bash
         #install java
         sudo apt-get update
-        sudo apt-get install openjdk-8-jdk
+        sudo apt-get install openjdk-8-jdk -y
 
         #install keycloak
         sudo wget https://github.com/keycloak/keycloak/releases/download/13.0.1/keycloak-13.0.1.tar.gz
