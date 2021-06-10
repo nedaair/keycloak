@@ -47,6 +47,7 @@ resource "aws_instance" "keycloak_instance" {
     }
 
     key_name = "megazone"
+    security_groups = [aws_security_group.keycloak_security_group.id]
 
     associate_public_ip_address = true
 }
@@ -71,4 +72,8 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     to_port = 8080
     type = "ingress"
     cidr_blocks = ["0.0.0.0/0"]
+}
+
+output "keycloak_admin_address" {
+    value = aws_instance.keycloak_instance.public_ip
 }
