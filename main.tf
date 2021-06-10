@@ -31,7 +31,7 @@ resource "aws_instance" "key_cloak" {
       device_name = ""
     }
 
-    tags {
-        Name = "keycloak instance1"
+    tags = {
+        "Name" : "keyclaok"
     }
 }
