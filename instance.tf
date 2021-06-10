@@ -18,6 +18,10 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"] # Canonical
 }
 
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
 resource "aws_instance" "keycloak_instance" {
     ami           = "${data.aws_ami.ubuntu.id}"
     instance_type = "t3.micro"
@@ -46,7 +50,6 @@ resource "aws_instance" "keycloak_instance" {
         "Name" : "keycloak"
     }
 
-    key_name = "megazone"
     security_groups = [aws_security_group.keycloak_security_group.id]
 
     associate_public_ip_address = true
@@ -57,14 +60,6 @@ resource "aws_security_group" "keycloak_security_group" {
     vpc_id = aws_vpc.keycloak_vpc.id
 }
 
-resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
-    from_port = 22
-    protocol = "tcp"
-    security_group_id = aws_security_group.keycloak_security_group.id
-    to_port = 22
-    type = "ingress"
-    cidr_blocks = ["0.0.0.0/0"]
-}
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     from_port = 9990
@@ -72,7 +67,7 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     security_group_id = aws_security_group.keycloak_security_group.id
     to_port = 9990
     type = "ingress"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
 }
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_egress" {
