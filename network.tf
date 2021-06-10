@@ -91,4 +91,8 @@ resource "aws_alb_listener" "keycloak_alb_listner" {
 resource "aws_alb_target_group" "keycloak_alb_target_group" {
   vpc_id = aws_vpc.keycloak_vpc.id
 
+  port = 8080
+
+  target_type = ""
+
 }

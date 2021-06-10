@@ -23,11 +23,6 @@ variable "private_subnet_cidr" {
   description = "key cloak private subnet"
 }
 
-variable "subnet_cidr" {
-  default = "10.29.0.0/24"
-  description = "key cloak subnet"
-}
-
 variable "key_name" {
   description = "key name"
 }

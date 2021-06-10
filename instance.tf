@@ -37,8 +37,6 @@ resource "aws_instance" "keycloak_instance" {
 
     key_name = var.key_name
     vpc_security_group_ids = [ aws_security_group.keycloak_security_group.id]
-
-    associate_public_ip_address = true
 }
 
 resource "aws_security_group" "keycloak_security_group" {
