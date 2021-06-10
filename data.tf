@@ -1,6 +1,3 @@
-data "aws_iam_role" "example" {
-  name = "an_example_role_name"
-}
 
 data "aws_ami" "ubuntu" {
     most_recent = true
