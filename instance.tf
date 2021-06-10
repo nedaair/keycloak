@@ -2,26 +2,11 @@ provider "aws" {
     region = "${var.aws_region}"
 }
 
-data "aws_ami" "ubuntu" {
-    most_recent = true
-
-    filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-    }
-
-    owners = ["099720109477"] # Canonical
-}
-
 resource "aws_instance" "keycloak_instance" {
     ami           = "${data.aws_ami.ubuntu.id}"
     instance_type = "t3.micro"
-    subnet_id = aws_subnet.keycloak_subnet.id
+    subnet_id = aws_subnet.keycloak_private_subnet.id
+    iam_instance_profile        = aws_iam_instance_profile.keycloak_instance_profile.name
 
     root_block_device {
       volume_type = "gp3"
@@ -31,6 +16,9 @@ resource "aws_instance" "keycloak_instance" {
 
     user_data = <<-EOF
 		#! /bin/bash
+        #install ssm agent
+        sudo snap install amazon-ssm-agent --classic
+
         #install java
         sudo apt-get update
         sudo apt-get install openjdk-8-jdk -y
@@ -85,4 +73,35 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_egress" {
     security_group_id = aws_security_group.keycloak_security_group.id
     type = "egress"
     cidr_blocks      = ["0.0.0.0/0"]
+}
+
+resource "aws_iam_role" "keycloak_role" {
+    name               = "keycloak_role"
+    path               = "/"
+    assume_role_policy = <<POLICY
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_instance_profile" "keycloak_instance_profile" {
+  name = "keycloak_instance_profile"
+  role = aws_iam_role.keycloak_role.name
+}
+
+resource "aws_iam_policy_attachment" "AmazonSSMManagedInstanceCore" {
+  name       = "AmazonSSMManagedInstanceCore"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  roles      = [ "AmazonSSMRoleForInstancesQuickSetup", "${aws_iam_role.keycloak_role.name}" ]
 }
