@@ -17,7 +17,7 @@ resource "aws_instance" "keycloak_instance" {
     user_data = <<-EOF
 		#! /bin/bash
         #install ssm agent
-        sudo snap install amazon-ssm-agent --classic
+        sudo snap install amazon-ssm-agent --classic -y
 
         #install java
         sudo apt-get update
@@ -29,6 +29,8 @@ resource "aws_instance" "keycloak_instance" {
         sudo sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
         sudo /root/keycloak-13.0.1/bin/add-user-keycloak.sh -r master -u admin -p "${var.keyclaok_password}"
         sudo /root/keycloak-13.0.1/bin/standalone.sh -b 127.0.0.1 &
+
+
 	EOF
 
     tags = {

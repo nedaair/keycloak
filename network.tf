@@ -1,20 +1,30 @@
 resource "aws_vpc" "keycloak_vpc" {
     cidr_block = var.vpc_cidr
+
+    tags = {
+      Name = "keycloak_vpc"
+    }
 }
 
 resource "aws_subnet" "keycloak_public_subnet1" {
     cidr_block = var.public_subnet_cidr
     vpc_id = aws_vpc.keycloak_vpc.id
+
+    availability_zone = "${data.aws_availability_zones.available.names[0]}"
 }
 
 resource "aws_subnet" "keycloak_public_subnet2" {
     cidr_block = var.public_subnet_cidr1
     vpc_id = aws_vpc.keycloak_vpc.id
+
+      availability_zone = "${data.aws_availability_zones.available.names[1]}"
 }
 
 resource "aws_subnet" "keycloak_private_subnet" {
     cidr_block = var.private_subnet_cidr
     vpc_id = aws_vpc.keycloak_vpc.id
+
+    availability_zone = "${data.aws_availability_zones.available.names[0]}"
 }
 
 
