@@ -16,3 +16,7 @@ variable "subnet_cidr" {
 variable "key_name" {
   description = "key name"
 }
+
+variable "keyclaok_password" {
+  description = "keycloak password"
+}
