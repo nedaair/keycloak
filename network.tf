@@ -77,6 +77,11 @@ resource "aws_route" "keycloak_private_route" {
     nat_gateway_id = aws_nat_gateway.keycloak_nat_gateway.id
 }
 
+resource "aws_acm_certificate" "keycloak_certificate" {
+  domain_name       = var.keycloak_domain
+  validation_method = "DNS"
+}
+
 resource "aws_alb" "keycloak_alb" {
   name = "keycloak-alb"
   internal = false
@@ -97,7 +102,10 @@ resource "aws_alb_listener" "keycloak_alb_listner" {
     target_group_arn = "${aws_alb_target_group.keycloak_alb_target_group.arn}"
     type = "forward"
   }
+
+  certificate_arn = aws_acm_certificate.keycloak_certificate.arn
 }
+
 
 resource "aws_alb_target_group" "keycloak_alb_target_group" {
   vpc_id = aws_vpc.keycloak_vpc.id
