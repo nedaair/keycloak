@@ -32,7 +32,7 @@ resource "aws_route_table_association" "keycloak_public_route_table_association"
     subnet_id = aws_subnet.keycloak_public_subnet1.id
 }
 
-resource "aws_route_table_association" "keycloak_public_route_table_association" {
+resource "aws_route_table_association" "keycloak_public_route_table_association1" {
     route_table_id = aws_route_table.keycloak_public_route_table.id
     subnet_id = aws_subnet.keycloak_public_subnet2.id
 }
