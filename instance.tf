@@ -36,8 +36,10 @@ resource "aws_instance" "keycloak_instance" {
         sudo apt-get install openjdk-8-jdk -y
 
         #install keycloak
-        sudo wget https://github.com/keycloak/keycloak/releases/download/13.0.1/keycloak-13.0.1.tar.gz
-        sudo tar -zxvf keycloak-13.0.1.tar.gz
+        sudo wget https://github.com/keycloak/keycloak/releases/download/13.0.1/keycloak-13.0.1.tar.gz -P /root
+        sudo tar -zxvf /root/keycloak-13.0.1.tar.gz
+        sudo sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        sudo /root/keycloak-13.0.1/bin/standalone.sh &
 
 	EOF
 
@@ -66,10 +68,10 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
 }
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
-    from_port = 8080
+    from_port = 9990
     protocol = "tcp"
     security_group_id = aws_security_group.keycloak_security_group.id
-    to_port = 8080
+    to_port = 9990
     type = "ingress"
     cidr_blocks = ["0.0.0.0/0"]
 }
