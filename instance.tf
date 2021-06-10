@@ -50,3 +50,25 @@ resource "aws_instance" "keycloak_instance" {
 
     associate_public_ip_address = true
 }
+
+resource "aws_security_group" "keycloak_security_group" {
+    name = "keycloak_security_group"
+}
+
+resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
+    from_port = 22
+    protocol = "tcp"
+    security_group_id = aws_security_group.keycloak_security_group.id
+    to_port = 22
+    type = "ingress"
+    cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
+    from_port = 8080
+    protocol = "tcp"
+    security_group_id = aws_security_group.keycloak_security_group.id
+    to_port = 8080
+    type = "ingress"
+    cidr_blocks = ["0.0.0.0/0"]
+}
