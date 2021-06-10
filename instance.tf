@@ -60,10 +60,10 @@ resource "aws_security_group" "keycloak_security_group" {
 
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
-    from_port = 9990
+    from_port = 8080
     protocol = "tcp"
     security_group_id = aws_security_group.keycloak_security_group.id
-    to_port = 9990
+    to_port = 8080
     type = "ingress"
     cidr_blocks      = ["0.0.0.0/0"]
 }
