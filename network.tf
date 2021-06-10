@@ -94,6 +94,7 @@ resource "aws_alb_listener" "keycloak_alb_listner" {
   port = 443
   protocol = "HTTPS"
   default_action {
+    target_group_arn = "${aws_alb_target_group.keycloak_alb_target_group.arn}"
     type = "forward"
   }
 }
