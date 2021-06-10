@@ -40,7 +40,7 @@ resource "aws_instance" "keycloak_instance" {
         sudo tar -zxvf /root/keycloak-13.0.1.tar.gz -C /root
         sudo sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
         sudo /root/keycloak-13.0.1/bin/add-user-keycloak.sh -r master -u admin -p "${var.keyclaok_password}"
-        sudo /root/keycloak-13.0.1/bin/standalone.sh -b 0.0.0.0 &
+        sudo /root/keycloak-13.0.1/bin/standalone.sh -b 127.0.0.1 &
 	EOF
 
     tags = {
@@ -68,14 +68,6 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     cidr_blocks      = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "keycloak_security_group_rule_admin1" {
-    from_port = 9990
-    protocol = "tcp"
-    security_group_id = aws_security_group.keycloak_security_group.id
-    to_port = 9990
-    type = "ingress"
-    cidr_blocks      = ["0.0.0.0/0"]
-}
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
     from_port = 22
