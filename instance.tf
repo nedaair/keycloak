@@ -75,6 +75,15 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     cidr_blocks = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    security_group_id = aws_security_group.keycloak_security_group.id
+    type = "egress"
+    cidr_blocks      = ["0.0.0.0/0"]
+}
+
 output "keycloak_admin_address" {
     value = aws_instance.keycloak_instance.public_ip
 }
