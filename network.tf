@@ -134,7 +134,7 @@ resource "aws_alb_target_group" "keycloak_alb_target_group" {
   vpc_id = aws_vpc.keycloak_vpc.id
 
   port = 8080
-  protocol = "HTTPS"
+  protocol = "HTTP"
 
   target_type = "instance"
 
