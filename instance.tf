@@ -18,9 +18,10 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "key_cloak" {
+resource "aws_instance" "keycloak_instance" {
     ami           = "${data.aws_ami.ubuntu.id}"
     instance_type = "t3.micro"
+    subnet_id = aws_subnet.keycloak_subnet.id
 
     root_block_device {
       volume_type = "gp3"
@@ -29,6 +30,6 @@ resource "aws_instance" "key_cloak" {
     }
 
     tags = {
-        "Name" : "keyclaok"
+        "Name" : "keycloak"
     }
 }

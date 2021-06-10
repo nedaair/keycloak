@@ -8,3 +8,7 @@ variable "vpc_cidr" {
   description = "key cloak vpc cidr"
 }
 
+variable "subnet_cidr" {
+  default = "10.29.0.0/24"
+  description = "key cloak subnet"
+}
