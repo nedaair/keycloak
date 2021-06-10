@@ -82,6 +82,18 @@ resource "aws_acm_certificate" "keycloak_certificate" {
   validation_method = "DNS"
 }
 
+resource "aws_route53_record" "keycloak_domain_record" {
+  zone_id = data.aws_route53_zone.domain.zone_id
+  name    = var.keycloak_domain
+  type    = "A"
+
+  alias {
+    name                   = aws_alb.keycloak_alb.dns_name
+    zone_id                = aws_alb.keycloak_alb.zone_id
+    evaluate_target_health = true
+  }
+}
+
 resource "aws_route53_record" "domain" {
   for_each = {
     for dvo in aws_acm_certificate.keycloak_certificate.domain_validation_options : dvo.domain_name => {
