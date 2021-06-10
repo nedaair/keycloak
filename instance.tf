@@ -54,6 +54,7 @@ resource "aws_instance" "keycloak_instance" {
 
 resource "aws_security_group" "keycloak_security_group" {
     name = "keycloak_security_group"
+    vpc_id = aws_vpc.keycloak_vpc.id
 }
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
