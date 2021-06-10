@@ -103,6 +103,12 @@ resource "aws_alb_target_group" "keycloak_alb_target_group" {
 
   port = 8080
 
-  target_type = ""
+  target_type = "instance"
 
+}
+
+resource "aws_lb_target_group_attachment" "keycloak_alb_target_group_attachment" {
+  target_group_arn = aws_alb_target_group.keycloak_alb_target_group.arn
+  target_id        = aws_instance.keycloak_instance.id
+  port             = 8080
 }
