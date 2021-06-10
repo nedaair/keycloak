@@ -68,6 +68,15 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     cidr_blocks      = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "keycloak_security_group_rule_admin1" {
+    from_port = 9990
+    protocol = "tcp"
+    security_group_id = aws_security_group.keycloak_security_group.id
+    to_port = 9990
+    type = "ingress"
+    cidr_blocks      = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
     from_port = 22
     protocol = "tcp"
@@ -84,8 +93,4 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_egress" {
     security_group_id = aws_security_group.keycloak_security_group.id
     type = "egress"
     cidr_blocks      = ["0.0.0.0/0"]
-}
-
-output "keycloak_admin_address" {
-    value = aws_instance.keycloak_instance.public_ip
 }
