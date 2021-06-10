@@ -13,9 +13,9 @@ resource "aws_internet_gateway" "keycloak_internet_gateway" {
 
 resource "aws_route_table" "keycloak_route_table" {
     vpc_id = aws_vpc.keycloak_vpc.id
-
-
 }
+
+
 
 resource "aws_route_table_association" "keycloak_route_table_association" {
     route_table_id = aws_route_table.keycloak_route_table.id
