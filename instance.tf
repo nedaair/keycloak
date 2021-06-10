@@ -44,6 +44,29 @@ resource "aws_instance" "keycloak_instance" {
     vpc_security_group_ids = [ aws_security_group.keycloak_security_group.id]
 }
 
+resource "aws_security_group" "keycloak_alb_security_group" {
+    name = "keycloak_alb_security_group"
+    vpc_id = aws_vpc.keycloak_vpc.id
+}
+
+resource "aws_security_group_rule" "keycloak_alb_security_group_rule" {
+    from_port = 443
+    protocol = "tcp"
+    security_group_id = aws_security_group.keycloak_alb_security_group.id
+    to_port = 443
+    type = "ingress"
+    cidr_blocks      = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "keycloak_alb_security_group_rule_egress" {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    security_group_id = aws_security_group.keycloak_alb_security_group.id
+    type = "egress"
+    cidr_blocks      = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group" "keycloak_security_group" {
     name = "keycloak_security_group"
     vpc_id = aws_vpc.keycloak_vpc.id
@@ -56,18 +79,9 @@ resource "aws_security_group_rule" "keycloak_security_group_rule_admin" {
     security_group_id = aws_security_group.keycloak_security_group.id
     to_port = 8080
     type = "ingress"
-    cidr_blocks      = ["0.0.0.0/0"]
+    source_security_group_id = aws_security_group.keycloak_alb_security_group.id
 }
 
-
-resource "aws_security_group_rule" "keycloak_security_group_rule_ssh" {
-    from_port = 22
-    protocol = "tcp"
-    security_group_id = aws_security_group.keycloak_security_group.id
-    to_port = 22
-    type = "ingress"
-    cidr_blocks      = ["0.0.0.0/0"]
-}
 
 resource "aws_security_group_rule" "keycloak_security_group_rule_egress" {
     from_port        = 0

@@ -99,7 +99,7 @@ resource "aws_route53_record" "domain" {
   zone_id         = data.aws_route53_zone.domain.zone_id
 }
 
-resource "aws_acm_certificate_validation" "example" {
+resource "aws_acm_certificate_validation" "keycloak_acm_validation" {
   certificate_arn         = aws_acm_certificate.keycloak_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.domain : record.fqdn]
 }
