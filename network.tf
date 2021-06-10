@@ -108,6 +108,7 @@ resource "aws_alb" "keycloak_alb" {
   name = "keycloak-alb"
   internal = false
 
+  security_groups = [aws_security_group.keycloak_alb_security_group.id]
   subnets         = [
     aws_subnet.keycloak_public_subnet1.id, aws_subnet.keycloak_public_subnet2.id
   ]
