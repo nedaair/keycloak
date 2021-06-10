@@ -9,7 +9,11 @@ variable "vpc_cidr" {
 }
 
 variable "keycloak_domain" {
-  description = "keycloak domain"
+  description = "keycloak domain : keycloak.xxxx.com"
+}
+
+variable "route53_domain" {
+  description = "domain : xxxx.com"
 }
 
 variable "public_subnet_cidr" {

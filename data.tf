@@ -16,3 +16,8 @@ data "aws_ami" "ubuntu" {
 }
 
 data "aws_availability_zones" "available" {}
+
+data "aws_route53_zone" "domain" {
+  name         = var.route53_domain
+  private_zone = false
+}
