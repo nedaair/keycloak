@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_instance" "keycloak_instance" {
     ami           = "${data.aws_ami.ubuntu.id}"
-    instance_type = "t3.micro"
+    instance_type = "t3.small"
     subnet_id = aws_subnet.keycloak_private_subnet.id
     iam_instance_profile        = aws_iam_instance_profile.keycloak_instance_profile.name
 
